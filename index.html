@@ -150,6 +150,10 @@
   .brush.active{border-color:var(--ink);box-shadow:2px 2px 0 var(--ink);transform:translate(-1px,-1px);}
   .seat.gm{background:#eef4fb;}
   .seat.gf{background:#fbeef5;}
+  .runchart .seat{cursor:pointer;transition:transform .08s;}
+  .runchart .seat:hover{transform:translateY(-2px);}
+  .seat.sel{box-shadow:0 0 0 3px var(--gold),0 2px 0 #e3dac2;border-color:var(--gold);transform:translateY(-2px);}
+  .runhint-sel{color:var(--gold);}
 
   .stat{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 18px;}
   .stat .box{flex:1;min-width:120px;border:1.5px solid var(--line);border-radius:11px;padding:10px 12px;background:#fffef9;}
@@ -172,8 +176,7 @@
   .nbr-chip{display:inline-flex;align-items:center;gap:5px;background:#fffef9;border:1px solid var(--line);
     border-radius:20px;padding:3px 11px;margin:3px 4px 3px 0;font-size:.84rem;}
   .nbr-chip b{background:var(--teal);color:#fff;border-radius:20px;font-size:.7rem;padding:0 7px;min-width:18px;text-align:center;}
-  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);opacity:0;
-    background:var(--ink);color:#fff;font-weight:700;font-size:.86rem;padding:10px 20px;border-radius:30px;
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);opacity:0;  background:var(--ink);color:#fff;font-weight:700;font-size:.86rem;padding:10px 20px;border-radius:30px;
     box-shadow:0 8px 24px -8px rgba(0,0,0,.5);transition:.25s;pointer-events:none;z-index:50;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
   @media(max-width:560px){
@@ -181,6 +184,41 @@
     .seat .nm{font-size:.78rem;}
     h1{font-size:1.4rem;}
   }
+  /* ---- generation production ---- */
+  .genoverlay{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 40%,rgba(31,122,107,.82),rgba(22,40,36,.92));
+    backdrop-filter:blur(3px);cursor:pointer;}
+  .genoverlay.show{display:flex;animation:ovfade .25s ease;}
+  @keyframes ovfade{from{opacity:0}to{opacity:1}}
+  .genbox{text-align:center;color:#fff;padding:20px;}
+  .genbadge{width:96px;height:96px;margin:0 auto 18px;border-radius:24px;background:#fffdf7;
+    display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:5px;padding:13px;
+    box-shadow:0 12px 30px -8px rgba(0,0,0,.5);animation:badgeb 1s ease-in-out infinite;}
+  .genbadge i{background:#bfe0d7;border-radius:4px;}
+  .genbadge i.on{background:var(--teal);}
+  @keyframes badgeb{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-14px) rotate(4deg)}}
+  .genslot{font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:2rem;letter-spacing:.04em;
+    background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.5);border-radius:14px;
+    padding:10px 26px;min-width:240px;display:inline-block;min-height:64px;line-height:44px;}
+  .genslot .flip{display:inline-block;animation:slotflip .12s ease;}
+  @keyframes slotflip{from{transform:translateY(-60%);opacity:.2}to{transform:translateY(0);opacity:1}}
+  .genlabel{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:1.15rem;margin-top:16px;letter-spacing:.3em;}
+  .genbar{width:240px;height:8px;border-radius:8px;background:rgba(255,255,255,.25);margin:14px auto 4px;overflow:hidden;}
+  .genbar i{display:block;height:100%;width:40%;border-radius:8px;background:#ffe08a;
+    background-image:linear-gradient(90deg,#ffd166,#fff3c4,#ffd166);animation:barsl 1s linear infinite;}
+  @keyframes barsl{from{transform:translateX(-120%)}to{transform:translateX(360%)}}
+  .genskip{margin-top:14px;font-size:.78rem;color:rgba(255,255,255,.8);}
+  .seat.pop{animation:seatpop .4s cubic-bezier(.2,1.3,.4,1) both;}
+  @keyframes seatpop{0%{transform:scale(.5) translateY(10px);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+  #confetti{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden;display:none;}
+  #confetti.show{display:block;}
+  .confpc{position:absolute;width:11px;height:14px;top:-20px;border-radius:2px;animation:conffall linear forwards;}
+  @keyframes conffall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(104vh) rotate(720deg);opacity:.9}}
+  .soundtoggle{display:inline-flex;align-items:center;gap:7px;font-family:'Zen Maru Gothic',sans-serif;font-weight:700;
+    font-size:.82rem;border:2px solid var(--line);background:#fffdf6;border-radius:20px;padding:5px 13px;cursor:pointer;color:var(--ink);}
+  .soundtoggle .dot{width:9px;height:9px;border-radius:50%;background:#c9bf9f;}
+  .soundtoggle.on{border-color:var(--teal);color:var(--teal-d);background:var(--teal-soft);}
+  .soundtoggle.on .dot{background:var(--teal);}
 </style>
 </head>
 <body>
@@ -219,6 +257,16 @@
   </footer>
 </div>
 <div class="toast" id="toast"></div>
+<div class="genoverlay" id="genOverlay">
+  <div class="genbox">
+    <div class="genbadge" id="genBadge"><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i></div>
+    <div class="genslot" id="genSlot">？？？</div>
+    <div class="genbar"><i></i></div>
+    <div class="genlabel">席がえ中…</div>
+    <div class="genskip">画面をタップでスキップ</div>
+  </div>
+</div>
+<div id="confetti"></div>
 
 <script>
 /* ============================= storage ============================= */
@@ -242,10 +290,14 @@ let state = {
   ng:[],                  // [id1,id2]
   rec:[],                 // [id1,id2]
   history:[],             // {id,date,month,label,layout,assignment}
-  current:null            // {layout, assignment, stats}
+  current:null,           // {layout, assignment, stats}
+  settings:{sound:true}   // 演出のBGM・効果音
 };
 let activeTab='roster';
 let brush='off';   // off | any | m | f  — レイアウト編集の塗りツール
+let careUnlocked=false;   // 配慮設定タブのセッション解除状態
+let selSeat=null;         // 手動入れ替えで選択中の席
+function hashPass(s){ let h=5381; for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0; return 'h'+h.toString(36); }
 
 function uid(){return Math.random().toString(36).slice(2,9);}
 async function save(){ await Store.set(KEY, JSON.stringify(state)); flashSaved(); }
@@ -253,6 +305,101 @@ function flashSaved(){ const el=document.getElementById('saveState'); if(el){el.
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1900);}
 function nameOf(id){const s=state.students.find(x=>x.id===id);return s?s.name:'(不明)';}
 function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+/* ============================= sound & production ============================= */
+let audioCtx=null, masterGain=null;
+function ac(){
+  if(!audioCtx){
+    const AC=window.AudioContext||window.webkitAudioContext; if(!AC)return null;
+    audioCtx=new AC(); masterGain=audioCtx.createGain(); masterGain.gain.value=0.5; masterGain.connect(audioCtx.destination);
+  }
+  if(audioCtx.state==='suspended')audioCtx.resume();
+  return audioCtx;
+}
+function soundOn(){return state.settings&&state.settings.sound;}
+function tone(freq,t0,dur,opt){
+  const c=ac(); if(!c)return; opt=opt||{};
+  const o=c.createOscillator(), g=c.createGain();
+  o.type=opt.type||'triangle'; o.frequency.value=freq; o.connect(g); g.connect(masterGain);
+  const t=c.currentTime+t0, gain=opt.gain==null?0.18:opt.gain;
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(gain,t+(opt.attack||0.012));
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.start(t); o.stop(t+dur+0.03);
+}
+function noiseHit(t0,dur,gain,hp){
+  const c=ac(); if(!c)return;
+  const b=c.createBuffer(1,Math.max(1,Math.floor(c.sampleRate*dur)),c.sampleRate);
+  const d=b.getChannelData(0); for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+  const s=c.createBufferSource(); s.buffer=b;
+  const f=c.createBiquadFilter(); f.type='highpass'; f.frequency.value=hp||1800;
+  const g=c.createGain(); const t=c.currentTime+t0;
+  g.gain.setValueAtTime(gain,t); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  s.connect(f); f.connect(g); g.connect(masterGain); s.start(t); s.stop(t+dur);
+}
+const NOTE={C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,B4:493.88,C5:523.25,D5:587.33,E5:659.25,F5:698.46,G5:783.99,A5:880,C6:1046.5};
+// cheerful build-up jingle (~1.5s). returns total ms.
+function playBuildup(){
+  if(!soundOn())return 1500;
+  const c=ac(); if(!c)return 1500;
+  // bouncy bass
+  const bass=[0,.2,.4,.6,.8,1.0,1.2,1.4];
+  bass.forEach((t,i)=>tone(i%2?98:130.81,t,0.18,{type:'square',gain:0.10}));
+  // rising playful melody
+  const mel=[['C5',0],['E5',.2],['G5',.4],['E5',.6],['G5',.8],['C6',1.0],['B4',1.2],['D5',1.4]];
+  mel.forEach(([n,t])=>tone(NOTE[n],t,0.18,{type:'triangle',gain:0.16}));
+  // accelerating snare roll for tension
+  let t=0; while(t<1.5){ noiseHit(t,0.05,0.12,2200); t += 0.16 - t*0.06; }
+  return 1500;
+}
+// "ta-daaa!" fanfare + cymbal on reveal
+function playFanfare(){
+  if(!soundOn())return;
+  ['C5','E5','G5'].forEach((n,i)=>tone(NOTE[n],i*0.09,0.18,{type:'triangle',gain:0.18}));
+  ['C6','E5','G5','C5'].forEach(n=>tone(NOTE[n],0.30,0.7,{type:'triangle',gain:0.17}));
+  tone(523.25/2,0.30,0.7,{type:'square',gain:0.08});
+  noiseHit(0.30,0.5,0.18,1200);
+}
+// confetti burst
+function confettiBurst(){
+  const box=document.getElementById('confetti'); if(!box)return;
+  const colors=['#1f7a6b','#c79a3b','#bd5b39','#2c5a86','#a23a72','#3a8f6f'];
+  box.innerHTML=''; box.classList.add('show');
+  for(let i=0;i<70;i++){
+    const p=document.createElement('div'); p.className='confpc';
+    p.style.left=Math.random()*100+'vw';
+    p.style.background=colors[i%colors.length];
+    const dur=1.6+Math.random()*1.4, delay=Math.random()*0.4;
+    p.style.animationDuration=dur+'s'; p.style.animationDelay=delay+'s';
+    p.style.width=(7+Math.random()*8)+'px'; p.style.height=(9+Math.random()*9)+'px';
+    if(Math.random()<.5)p.style.borderRadius='50%';
+    box.appendChild(p);
+  }
+  setTimeout(()=>{box.classList.remove('show');box.innerHTML='';},3400);
+}
+// overlay with slot-machine name cycling; resolves after build-up or on tap
+function runProduction(){
+  return new Promise(resolve=>{
+    const ov=document.getElementById('genOverlay'), slot=document.getElementById('genSlot');
+    const names=state.students.map(s=>s.name); let done=false;
+    ov.classList.add('show');
+    const spin=setInterval(()=>{
+      const nm=names.length?names[Math.floor(Math.random()*names.length)]:'？？？';
+      slot.innerHTML=`<span class="flip">${esc(nm)}</span>`;
+    },90);
+    const dur=playBuildup();
+    const finish=()=>{ if(done)return; done=true; clearInterval(spin); ov.classList.remove('show'); ov.onclick=null; resolve(); };
+    ov.onclick=finish;
+    setTimeout(finish,dur);
+  });
+}
+// pop-in animation on freshly rendered seats
+function revealSeats(){
+  const seats=document.querySelectorAll('#runResult .seat');
+  seats.forEach((s,i)=>{ s.classList.add('pop'); s.style.animationDelay=(i*0.035)+'s'; });
+  playFanfare(); confettiBurst();
+}
+
 
 /* ============================= seat / algorithm ============================= */
 function buildSeats(layout){
@@ -398,6 +545,11 @@ function feasibility(students,layout){
 const view=document.getElementById('view');
 function render(){
   document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===activeTab));
+  const careBtn=document.querySelector('#tabs button[data-tab="care"]');
+  if(careBtn){
+    const locked=!!(state.settings&&state.settings.carePass)&&!careUnlocked;
+    careBtn.innerHTML='③ 配慮設定'+(locked?' <span style="font-size:.85em">🔒</span>':(careUnlocked?' <span style="font-size:.85em">🔓</span>':''));
+  }
   ({roster:renderRoster, layout:renderLayout, care:renderCare, run:renderRun, history:renderHistory}[activeTab])();
 }
 
@@ -641,10 +793,72 @@ function groupEditor(L){
 
 /* ---------- ③ care ---------- */
 function renderCare(){
+  const hasPass=!!(state.settings&&state.settings.carePass);
+
+  // --- 初回:パスワード未設定なら設定画面 ---
+  if(!hasPass){
+    view.innerHTML=`
+    <div class="card" style="max-width:520px;margin:30px auto;border-color:var(--gold);background:#fffdf3">
+      <h2>🔒 配慮設定にパスワードを設定</h2>
+      <p class="lead">配慮設定(固定席・離したいペア・近づけたいペア)は、子どもに見られないようパスワードで保護します。最初に、このタブを開くためのパスワードを決めてください。</p>
+      <div class="row" style="flex-direction:column;gap:10px">
+        <div style="width:100%"><label class="fld">パスワード</label><input type="password" id="pw1" placeholder="例:4文字以上の好きな文字"></div>
+        <div style="width:100%"><label class="fld">確認のためもう一度</label><input type="password" id="pw2" placeholder="同じものを入力"></div>
+      </div>
+      <div id="pwErr" style="color:var(--clay);font-size:.82rem;margin-top:8px"></div>
+      <div style="margin-top:14px"><button class="btn" id="pwSet">このパスワードで保護する</button></div>
+      <div class="hint" style="margin-top:14px">メモ:このパスワードは端末内に保存される簡易的な目隠しです。忘れた場合は、配慮設定の内容を消去して再設定することになります(名簿や履歴は残ります)。</div>
+    </div>`;
+    document.getElementById('pwSet').onclick=()=>{
+      const a=document.getElementById('pw1').value, b=document.getElementById('pw2').value;
+      const err=document.getElementById('pwErr');
+      if(a.length<4){err.textContent='パスワードは4文字以上にしてください。';return;}
+      if(a!==b){err.textContent='2つの入力が一致しません。';return;}
+      state.settings.carePass=hashPass(a); careUnlocked=true; save(); render(); toast('保護を設定しました');
+    };
+    return;
+  }
+
+  // --- ロック中:解除画面 ---
+  if(!careUnlocked){
+    view.innerHTML=`
+    <div class="card" style="max-width:480px;margin:30px auto;text-align:center">
+      <div style="font-size:2.4rem;line-height:1;margin:6px 0 4px">🔒</div>
+      <h2 style="justify-content:center">配慮設定はロックされています</h2>
+      <p class="lead">固定席・離したいペア・近づけたいペアなど、子どもに見せたくない情報です。パスワードを入力すると開けます。</p>
+      <div style="max-width:280px;margin:0 auto"><input type="password" id="pwIn" placeholder="パスワード" autofocus></div>
+      <div id="pwErr2" style="color:var(--clay);font-size:.82rem;margin-top:8px;min-height:18px"></div>
+      <div style="margin-top:12px"><button class="btn" id="pwGo">ロックを解除</button></div>
+      <div style="margin-top:16px"><a href="#" id="pwForgot" style="font-size:.76rem;color:var(--ink-soft)">パスワードを忘れた場合</a></div>
+    </div>`;
+    const tryUnlock=()=>{
+      const v=document.getElementById('pwIn').value;
+      if(hashPass(v)===state.settings.carePass){ careUnlocked=true; render(); }
+      else { document.getElementById('pwErr2').textContent='パスワードが違います。'; document.getElementById('pwIn').value=''; }
+    };
+    document.getElementById('pwGo').onclick=tryUnlock;
+    document.getElementById('pwIn').onkeydown=e=>{ if(e.key==='Enter')tryUnlock(); };
+    document.getElementById('pwForgot').onclick=e=>{
+      e.preventDefault();
+      if(confirm('パスワードをリセットします。安全のため、いまの配慮設定(固定席・離したい/近づけたいペア)はすべて消去されます。名簿・教室・履歴は残ります。よろしいですか?')){
+        state.fixed=[]; state.ng=[]; state.rec=[]; delete state.settings.carePass; careUnlocked=false; save(); render();
+        toast('リセットしました。新しいパスワードを設定してください');
+      }
+    };
+    return;
+  }
+
+  // --- 解除済み:通常の配慮設定 ---
   const opts=state.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
   const seats=buildSeats(state.layout);
   const seatOpts=seats.map(s=>`<option value="${s.key}">${seatLabel(s,state.layout)}</option>`).join('');
-  view.innerHTML=`
+  const lockBar=`<div class="card" style="display:flex;align-items:center;gap:12px;border-color:var(--teal);background:var(--teal-soft)">
+    <span style="font-weight:700;color:var(--teal-d);font-family:'Zen Maru Gothic',sans-serif">🔓 配慮設定を表示中</span>
+    <span style="font-size:.78rem;color:var(--ink-soft);flex:1">ほかのタブに移ると自動で再ロックされます。</span>
+    <button class="btn ghost sm" id="careLock">今すぐロック</button>
+    <button class="mini" id="carePwChange">パスワード変更</button>
+  </div>`;
+  view.innerHTML=lockBar+`
   <div class="card">
     <h2>固定席 <span class="tag">${state.fixed.length}</span></h2>
     <p class="lead">視力・聴力・支援など、配置を固定したい生徒を指定します。「前方◯列のどこか」または「特定の席」を選べます。</p>
@@ -676,6 +890,16 @@ function renderCare(){
 
   const typeSel=document.getElementById('fType');
   const detailWrap=document.getElementById('fDetailWrap');
+  document.getElementById('careLock').onclick=()=>{ careUnlocked=false; render(); toast('ロックしました'); };
+  document.getElementById('carePwChange').onclick=()=>{
+    const cur=prompt('確認のため、現在のパスワードを入力してください'); if(cur==null)return;
+    if(hashPass(cur)!==state.settings.carePass){toast('現在のパスワードが違います');return;}
+    const np=prompt('新しいパスワード(4文字以上)'); if(np==null)return;
+    if(np.length<4){toast('4文字以上にしてください');return;}
+    const np2=prompt('確認のためもう一度'); if(np2==null)return;
+    if(np!==np2){toast('一致しませんでした');return;}
+    state.settings.carePass=hashPass(np); save(); toast('パスワードを変更しました');
+  };
   function syncDetail(){
     if(typeSel.value==='seat')
       detailWrap.innerHTML=`<label class="fld">席</label><select id="fSeat">${seatOpts}</select>`;
@@ -738,6 +962,7 @@ function renderRun(){
     <div class="row" style="align-items:center">
       <div style="flex:0"><button class="btn" id="genBtn">席替え案を生成する</button></div>
       <div style="flex:0"><button class="btn ghost" id="regenBtn" ${state.current?'':'style=display:none'}>別の案を出す</button></div>
+      <div style="flex:0"><button class="soundtoggle ${soundOn()?'on':''}" id="soundToggle"><span class="dot"></span>${soundOn()?'音 オン':'音 オフ'}</button></div>
       <div style="flex:1;text-align:right;font-size:.82rem;color:var(--ink-soft)">生徒 ${n}人 / 席 ${seatN}席${state.history.length?` ・ 履歴 ${state.history.length}件を反映`:''}</div>
     </div>
     ${n===0?'<div class="hint" style="border-color:var(--clay)">先に「① 名簿」で生徒を登録してください。</div>':
@@ -764,21 +989,44 @@ function renderRun(){
         <div class="box good"><b>${stats.recHit.length}/${stats.recTotal}</b><span>推奨ペアの隣接達成</span></div>
         <div class="box ${stats.repeats.length?'':'good'}"><b>${stats.repeats.length}</b><span>過去に隣だった組の再発</span></div>
       </div>
-      ${stats.ngHit.length?`<div class="hint" style="border-color:var(--clay)">NGペアが隣接しています:${stats.ngHit.map(p=>esc(nameOf(p[0]))+'と'+esc(nameOf(p[1]))).join('、')}。席数や固定席の都合で回避しきれませんでした。「別の案を出す」か条件を見直してください。</div>`:''}
-      ${seatChart(state.current.layout,assignment,stats.ngHit)}`;
+      ${stats.ngHit.length?`<div class="hint" style="border-color:var(--clay)">NGペアが隣接しています:${stats.ngHit.map(p=>esc(nameOf(p[0]))+'と'+esc(nameOf(p[1]))).join('、')}。「別の案を出す」か、下の座席図で手動で入れ替えてください。</div>`:''}
+      <div class="hint">手動で入れ替え:座席をタップ→交換したいもう一つの席をタップすると、2人を入れ替えます(空席への移動もできます)。${selSeat?'　<b>選択中の席をもう一度タップで選択解除。</b>':''}</div>
+      <div class="runchart">${seatChart(state.current.layout,assignment,stats.ngHit)}</div>`;
+    bindSwap();
+  }
+  function bindSwap(){
+    result.querySelectorAll('.runchart .seat[data-k]').forEach(el=>el.onclick=()=>{
+      const k=el.dataset.k;
+      if(selSeat===null){ selSeat=k; showCurrent(); return; }
+      if(selSeat===k){ selSeat=null; showCurrent(); return; }
+      const asg=state.current.assignment;
+      const a=asg[selSeat], b=asg[k];
+      if(a===undefined)delete asg[k]; else asg[k]=a;
+      if(b===undefined)delete asg[selSeat]; else asg[selSeat]=b;
+      state.current.stats=computeStats(state.current.layout,asg);
+      selSeat=null; save(); showCurrent();
+    });
   }
   showCurrent();
 
-  const gen=()=>{
+  const gen=async ()=>{
     if(state.students.length===0)return toast('先に名簿を登録してください');
+    selSeat=null;
     const past=pastCounts(state.history);
     const res=solve(state.students,state.layout,{fixed:state.fixed,ng:state.ng,rec:state.rec},past,{restarts:70,iters:1000});
     if(res.error){result.innerHTML=`<div class="hint" style="border-color:var(--clay)">${res.error}</div>`;return;}
+    if(soundOn())ac();                       // unlock audio on this user gesture
+    const gb=document.getElementById('genBtn'), rbb=document.getElementById('regenBtn');
+    if(gb)gb.disabled=true; if(rbb)rbb.disabled=true;
+    await runProduction();                   // overlay + BGM build-up
     state.current={layout:JSON.parse(JSON.stringify(state.layout)),assignment:res.assignment,stats:res.stats};
-    save();render();
+    save();render();                         // redraw (run tab) with the new chart
+    revealSeats();                           // pop-in + fanfare + confetti
   };
   document.getElementById('genBtn').onclick=gen;
   const rb=document.getElementById('regenBtn'); if(rb)rb.onclick=gen;
+  const st=document.getElementById('soundToggle');
+  if(st)st.onclick=()=>{ state.settings.sound=!state.settings.sound; if(state.settings.sound)ac(); save();render(); };
   const sh=document.getElementById('saveHist');
   if(sh)sh.onclick=()=>{
     const d=document.getElementById('saveDate').value||today;
@@ -789,6 +1037,15 @@ function renderRun(){
   };
 }
 
+function computeStats(L,asg){
+  const seats=buildSeats(L), nmap=neighborMap(seats,L);
+  const adj=adjacentPairs(asg,nmap);
+  const past=pastCounts(state.history);
+  const ngHit=state.ng.filter(p=>adj.has(pairKey(p[0],p[1])));
+  const recHit=state.rec.filter(p=>adj.has(pairKey(p[0],p[1])));
+  const repeats=[...adj].filter(pk=>past[pk]);
+  return {ngHit,recHit,recTotal:state.rec.length,repeats};
+}
 function seatChart(L,asg,ngHit){
   const ngIds=new Set(); (ngHit||[]).forEach(p=>{ngIds.add(p[0]);ngIds.add(p[1]);});
   const fixedSet=new Set(state.fixed.map(f=>f.studentId));
@@ -796,11 +1053,12 @@ function seatChart(L,asg,ngHit){
   const seatHTML=(s)=>{
     const gd=sg[s.key], gcls=gd==='m'?'gm':gd==='f'?'gf':'';
     const gmark=gd==='m'?'<span class="corner" style="color:#2c5a86">♂</span>':gd==='f'?'<span class="corner" style="color:#a23a72">♀</span>':'';
+    const sel=(selSeat===s.key)?' sel':'';
     const sid=asg[s.key];
-    if(!sid)return `<div class="seat empty ${gcls}">${gmark}<span class="meta">空席</span></div>`;
+    if(!sid)return `<div class="seat empty ${gcls}${sel}" data-k="${s.key}">${gmark}<span class="meta">空席</span></div>`;
     const st=state.students.find(x=>x.id===sid)||{name:'?'};
     const warn=ngIds.has(sid), fix=fixedSet.has(sid);
-    return `<div class="seat ${gcls} ${fix?'fixed':''} ${warn?'warn':''}">
+    return `<div class="seat ${gcls} ${fix?'fixed':''} ${warn?'warn':''}${sel}" data-k="${s.key}">
       ${fix?'<span class="corner">固</span>':gmark}${warn?'<span class="warncorner">NG</span>':''}
       <span class="nm">${esc(st.name)}</span>${st.note?`<span class="meta">${esc(st.note)}</span>`:''}</div>`;
   };
@@ -877,10 +1135,10 @@ function renderHistory(){
 }
 
 /* ============================= boot ============================= */
-document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;render();});
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{ if(b.dataset.tab!=='care')careUnlocked=false; activeTab=b.dataset.tab; render(); });
 (async function(){
   const raw=await Store.get(KEY);
-  if(raw){ try{ const d=JSON.parse(raw); state={...state,...d, layout:{...state.layout,...(d.layout||{})}}; }catch(e){} }
+  if(raw){ try{ const d=JSON.parse(raw); state={...state,...d, layout:{...state.layout,...(d.layout||{})}, settings:{...state.settings,...(d.settings||{})}}; }catch(e){} }
   document.getElementById('saveState').textContent = raw?'前回のデータを読み込みました':'新規データではじめます';
   render();
 })();
