@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="古澤 拓実(和歌山市立伏虎義務教育学校)">
+<meta name="version" content="1.0">
+<meta name="copyright" content="© 2026 古澤拓実(和歌山市立伏虎義務教育学校)">
+<!--
+  席替えノート Version 1.0
+  © 2026 古澤拓実(和歌山市立伏虎義務教育学校)　制作日 2026年6月4日
+  出典を明記すれば教育目的での利用・複製は自由です。
+  商用利用・出典を伏せた再配布・無断改変版の公開は禁じます。
+-->
+<title>席替えノート Ver1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f5f0e3;
+    --paper-2:#efe8d6;
+    --card:#fffdf7;
+    --ink:#33302a;
+    --ink-soft:#6f685c;
+    --line:#d8cfb8;
+    --grid-line:#e4dcc6;
+    --teal:#1f7a6b;
+    --teal-d:#16574c;
+    --teal-soft:#dcebe6;
+    --clay:#bd5b39;
+    --clay-soft:#f4e0d6;
+    --gold:#c79a3b;
+    --shadow:0 2px 0 #e7dec8, 0 10px 24px -14px rgba(60,50,30,.4);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--grid-line) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:26px 26px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:22px 18px 80px;}
+  header.top{
+    display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;
+    border-bottom:3px solid var(--ink);padding-bottom:14px;margin-bottom:6px;
+  }
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand .mark{
+    width:46px;height:46px;border-radius:11px;background:var(--teal);
+    display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);
+    gap:3px;padding:7px;box-shadow:var(--shadow);flex:none;
+  }
+  .brand .mark i{background:#bfe0d7;border-radius:2px;}
+  .brand .mark i.on{background:#fffdf7;}
+  h1{font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:1.7rem;margin:0;letter-spacing:.04em;}
+  .sub{color:var(--ink-soft);font-size:.82rem;margin-left:auto;text-align:right;max-width:330px;}
+  .savechip{display:inline-flex;align-items:center;gap:5px;font-size:.74rem;color:var(--teal-d);background:var(--teal-soft);
+    border:1px solid #bcd9d0;border-radius:20px;padding:2px 10px;margin-top:4px;font-weight:700;}
+  .savechip b{width:7px;height:7px;border-radius:50%;background:var(--teal);}
+
+  nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 22px;}
+  nav.tabs button{
+    font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:.92rem;
+    border:2px solid var(--ink);background:var(--card);color:var(--ink);
+    padding:8px 16px;border-radius:11px 11px 0 11px;cursor:pointer;
+    box-shadow:2px 2px 0 var(--ink);transition:transform .08s,background .15s;
+  }
+  nav.tabs button:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink);}
+  nav.tabs button.active{background:var(--teal);color:#fff;border-color:var(--teal-d);box-shadow:2px 2px 0 var(--teal-d);}
+
+  .card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px;box-shadow:var(--shadow);}
+  .card h2{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:1.12rem;margin:0 0 4px;display:flex;align-items:center;gap:8px;}
+  .card h2 .tag{font-size:.66rem;background:var(--paper-2);border:1px solid var(--line);color:var(--ink-soft);
+    border-radius:6px;padding:1px 7px;font-weight:700;letter-spacing:.05em;}
+  .card p.lead{color:var(--ink-soft);font-size:.85rem;margin:0 0 14px;}
+
+  label.fld{display:block;font-size:.78rem;font-weight:700;color:var(--ink-soft);margin:0 0 4px;}
+  input[type=text],input[type=number],input[type=date],select,textarea{
+    font-family:inherit;font-size:.92rem;color:var(--ink);background:#fffefb;
+    border:1.5px solid var(--line);border-radius:9px;padding:8px 10px;width:100%;
+  }
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-soft);}
+  textarea{resize:vertical;min-height:90px;line-height:1.7;}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;}
+  .row > div{flex:1;min-width:120px;}
+
+  button.btn{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;
+    border:2px solid var(--teal-d);background:var(--teal);color:#fff;padding:9px 18px;border-radius:10px;
+    box-shadow:2px 2px 0 var(--teal-d);transition:transform .08s;}
+  button.btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--teal-d);}
+  button.btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--teal-d);}
+  button.btn.ghost{background:var(--card);color:var(--ink);border-color:var(--ink);box-shadow:2px 2px 0 var(--ink);}
+  button.btn.clay{background:var(--clay);border-color:#8f4127;box-shadow:2px 2px 0 #8f4127;}
+  button.btn.sm{padding:5px 11px;font-size:.8rem;box-shadow:1px 1px 0 currentColor;}
+  button.mini{border:1px solid var(--line);background:#fff;border-radius:7px;cursor:pointer;font-size:.74rem;
+    padding:3px 8px;color:var(--ink-soft);font-weight:700;}
+  button.mini:hover{border-color:var(--clay);color:var(--clay);}
+
+  table{width:100%;border-collapse:collapse;font-size:.9rem;}
+  th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--grid-line);}
+  th{font-size:.72rem;color:var(--ink-soft);letter-spacing:.05em;text-transform:none;}
+  tr:last-child td{border-bottom:none;}
+  .pill{display:inline-block;font-size:.72rem;font-weight:700;border-radius:20px;padding:1px 9px;}
+  .pill.m{background:#e2ecf6;color:#2c5a86;}
+  .pill.f{background:#f6e2ee;color:#a23a72;}
+  .pill.x{background:var(--paper-2);color:var(--ink-soft);}
+  .pill.fix{background:var(--teal-soft);color:var(--teal-d);}
+
+  .empty{color:var(--ink-soft);font-size:.86rem;text-align:center;padding:22px;border:1.5px dashed var(--line);border-radius:11px;background:#fffef9;}
+
+  /* seat chart */
+  .board{background:linear-gradient(#2f4a44,#27403a);color:#eafaf4;text-align:center;font-family:'Zen Maru Gothic',sans-serif;
+    font-weight:700;letter-spacing:.5em;padding:8px;border-radius:8px;margin:0 auto 20px;max-width:560px;
+    box-shadow:inset 0 0 0 3px #1d2f2b,0 4px 10px -4px rgba(0,0,0,.4);}
+  .gridseats{display:grid;gap:10px;justify-content:center;margin:0 auto;}
+  .island-wrap{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;}
+  .island{display:grid;gap:8px;padding:12px;border:2px dashed var(--line);border-radius:14px;background:#fffef9;}
+  .seat{
+    width:96px;height:62px;border-radius:9px;border:1.5px solid #c9bf9f;background:#fffdf6;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;
+    box-shadow:0 2px 0 #e3dac2;padding:4px;text-align:center;
+  }
+  .seat .nm{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:.92rem;line-height:1.15;}
+  .seat .meta{font-size:.62rem;color:var(--ink-soft);margin-top:2px;}
+  .seat.empty{background:repeating-linear-gradient(45deg,#f3eedd,#f3eedd 6px,#ece4cf 6px,#ece4cf 12px);border-style:dashed;}
+  .seat.fixed{border-color:var(--teal);box-shadow:0 2px 0 #bcd9d0,0 0 0 2px var(--teal-soft);}
+  .seat.warn{border-color:var(--clay);box-shadow:0 2px 0 #e3b9a8,0 0 0 2px var(--clay-soft);}
+  .seat .corner{position:absolute;top:3px;right:5px;font-size:.6rem;color:var(--teal);font-weight:700;}
+  .seat .warncorner{position:absolute;top:3px;left:5px;font-size:.6rem;color:var(--clay);font-weight:700;}
+
+  /* layout editor cells */
+  .editgrid{display:grid;gap:5px;justify-content:center;margin:14px auto;}
+  .cell{width:40px;height:30px;border-radius:6px;border:1.5px solid var(--line);background:#fffdf6;cursor:pointer;
+    font-size:.62rem;color:var(--ink-soft);display:flex;align-items:center;justify-content:center;font-weight:700;}
+  .cell.off{background:repeating-linear-gradient(45deg,#efe8d6,#efe8d6 4px,#e6ddc6 4px,#e6ddc6 8px);color:#c3b896;}
+  .cell.male{background:#e2ecf6;border-color:#9cc0e0;color:#2c5a86;}
+  .cell.female{background:#f6e2ee;border-color:#dfa6c6;color:#a23a72;}
+  .brushbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0 4px;}
+  .brushbar .lbl{font-size:.78rem;font-weight:700;color:var(--ink-soft);}
+  .brush{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;
+    border:2px solid var(--line);background:#fffdf6;color:var(--ink);padding:6px 13px;border-radius:9px;display:flex;align-items:center;gap:6px;}
+  .brush .sw{width:14px;height:14px;border-radius:4px;border:1px solid rgba(0,0,0,.15);}
+  .brush.active{border-color:var(--ink);box-shadow:2px 2px 0 var(--ink);transform:translate(-1px,-1px);}
+  .seat.gm{background:#eef4fb;}
+  .seat.gf{background:#fbeef5;}
+
+  .stat{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 18px;}
+  .stat .box{flex:1;min-width:120px;border:1.5px solid var(--line);border-radius:11px;padding:10px 12px;background:#fffef9;}
+  .stat .box b{display:block;font-family:'Zen Maru Gothic',sans-serif;font-size:1.5rem;line-height:1.1;}
+  .stat .box span{font-size:.74rem;color:var(--ink-soft);}
+  .stat .box.good b{color:var(--teal);}
+  .stat .box.bad b{color:var(--clay);}
+
+  .seg{display:inline-flex;border:2px solid var(--ink);border-radius:10px;overflow:hidden;box-shadow:2px 2px 0 var(--ink);}
+  .seg button{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;border:none;background:var(--card);color:var(--ink);
+    padding:7px 16px;cursor:pointer;font-size:.86rem;}
+  .seg button.active{background:var(--teal);color:#fff;}
+  .seg button+button{border-left:2px solid var(--ink);}
+
+  .hint{font-size:.78rem;color:var(--ink-soft);background:var(--paper-2);border-left:3px solid var(--gold);
+    padding:8px 12px;border-radius:0 8px 8px 0;margin:10px 0;}
+  .listrow{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--grid-line);font-size:.9rem;}
+  .listrow:last-child{border-bottom:none;}
+  .arrow{color:var(--ink-soft);font-weight:700;}
+  .nbr-chip{display:inline-flex;align-items:center;gap:5px;background:#fffef9;border:1px solid var(--line);
+    border-radius:20px;padding:3px 11px;margin:3px 4px 3px 0;font-size:.84rem;}
+  .nbr-chip b{background:var(--teal);color:#fff;border-radius:20px;font-size:.7rem;padding:0 7px;min-width:18px;text-align:center;}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);opacity:0;
+    background:var(--ink);color:#fff;font-weight:700;font-size:.86rem;padding:10px 20px;border-radius:30px;
+    box-shadow:0 8px 24px -8px rgba(0,0,0,.5);transition:.25s;pointer-events:none;z-index:50;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  @media(max-width:560px){
+    .seat{width:74px;height:54px;}
+    .seat .nm{font-size:.78rem;}
+    h1{font-size:1.4rem;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="mark"><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i></div>
+      <div>
+        <h1>席替えノート <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:.78rem;color:#fff;background:var(--teal);border-radius:6px;padding:1px 8px;vertical-align:middle;letter-spacing:.02em;">Ver 1.0</span></h1>
+        <div style="font-size:.78rem;color:var(--ink-soft);">配慮・関係・履歴をふまえた座席づくり</div>
+      </div>
+    </div>
+    <div class="sub">
+      名簿・配慮・履歴はこの端末のブラウザに保存され、次に開いたときも残ります。
+      <div class="savechip"><b></b><span id="saveState">読み込み中…</span></div>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="roster" class="active">① 名簿</button>
+    <button data-tab="layout">② 教室レイアウト</button>
+    <button data-tab="care">③ 配慮設定</button>
+    <button data-tab="run">④ 席替え実行</button>
+    <button data-tab="history">⑤ 履歴・過去の隣</button>
+  </nav>
+
+  <main id="view"></main>
+
+  <footer style="margin-top:40px;padding-top:18px;border-top:2px solid var(--line);text-align:center;font-size:.8rem;color:var(--ink-soft);line-height:1.9;">
+    <div style="font-family:'Zen Maru Gothic',sans-serif;font-weight:700;color:var(--ink);">席替えノート — バージョン 1.0</div>
+    <div>© 2026 古澤拓実(和歌山市立伏虎義務教育学校)　制作日 2026年6月4日</div>
+    <div style="max-width:640px;margin:8px auto 0;font-size:.76rem;">
+      出典を明記すれば教育目的での利用・複製は自由です。<br>
+      商用利用・出典を伏せた再配布・無断改変版の公開は禁じます。
+    </div>
+  </footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================= storage ============================= */
+const Store = {
+  async get(key){
+    if(window.storage){ try{const r=await window.storage.get(key); return r?r.value:null;}catch(e){return null;} }
+    try{return localStorage.getItem(key);}catch(e){return null;}
+  },
+  async set(key,val){
+    if(window.storage){ try{await window.storage.set(key,val);}catch(e){} }
+    else{ try{localStorage.setItem(key,val);}catch(e){} }
+  }
+};
+const KEY='sekigae:data:v1';
+
+/* ============================= state ============================= */
+let state = {
+  students:[],            // {id,name,gender,note}
+  layout:{mode:'grid', rows:5, cols:6, frontBack:false, disabled:[], groups:8, perGroup:4, seatGender:{}},
+  fixed:[],               // {id,studentId,type:'frontRows'|'seat', rows?, seatKey?}
+  ng:[],                  // [id1,id2]
+  rec:[],                 // [id1,id2]
+  history:[],             // {id,date,month,label,layout,assignment}
+  current:null            // {layout, assignment, stats}
+};
+let activeTab='roster';
+let brush='off';   // off | any | m | f  — レイアウト編集の塗りツール
+
+function uid(){return Math.random().toString(36).slice(2,9);}
+async function save(){ await Store.set(KEY, JSON.stringify(state)); flashSaved(); }
+function flashSaved(){ const el=document.getElementById('saveState'); if(el){el.textContent='保存しました '+new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});} }
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1900);}
+function nameOf(id){const s=state.students.find(x=>x.id===id);return s?s.name:'(不明)';}
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+/* ============================= seat / algorithm ============================= */
+function buildSeats(layout){
+  const seats=[];
+  if(layout.mode==='grid'){
+    for(let r=0;r<layout.rows;r++)for(let c=0;c<layout.cols;c++){
+      const key=`g_${r}_${c}`;
+      if((layout.disabled||[]).includes(key))continue;
+      seats.push({key,r,c,group:null});
+    }
+  }else{
+    for(let gi=0;gi<layout.groups;gi++){
+      const per=layout.perGroup, gcols=per<=2?per:2;
+      for(let s=0;s<per;s++) seats.push({key:`p_${gi}_${s}`, r:Math.floor(s/gcols), c:s%gcols, group:gi});
+    }
+  }
+  return seats;
+}
+function neighborMap(seats,layout){
+  const map={}; seats.forEach(s=>map[s.key]=new Set());
+  if(layout.mode==='grid'){
+    const byPos={}; seats.forEach(s=>byPos[`${s.r},${s.c}`]=s);
+    seats.forEach(s=>{
+      const cand=[[s.r,s.c-1],[s.r,s.c+1]];
+      if(layout.frontBack){cand.push([s.r-1,s.c],[s.r+1,s.c]);}
+      cand.forEach(([r,c])=>{const n=byPos[`${r},${c}`]; if(n)map[s.key].add(n.key);});
+    });
+  }else{
+    const byG={}; seats.forEach(s=>{(byG[s.group]=byG[s.group]||[]).push(s);});
+    Object.values(byG).forEach(arr=>arr.forEach(a=>arr.forEach(b=>{if(a.key!==b.key)map[a.key].add(b.key);})));
+  }
+  return map;
+}
+function pairKey(a,b){return a<b?a+'|'+b:b+'|'+a;}
+function pastCounts(history){
+  const counts={};
+  history.forEach(h=>{
+    const seats=buildSeats(h.layout), nm=neighborMap(seats,h.layout), asg=h.assignment;
+    seats.forEach(s=>{
+      const sa=asg[s.key]; if(!sa)return;
+      nm[s.key].forEach(nk=>{const sb=asg[nk]; if(!sb||sa>=sb)return; counts[pairKey(sa,sb)]=(counts[pairKey(sa,sb)]||0)+1;});
+    });
+  });
+  return counts;
+}
+function adjacentPairs(asg,nmap){
+  const out=new Set();
+  Object.keys(nmap).forEach(k=>{const a=asg[k];if(!a)return;nmap[k].forEach(nk=>{const b=asg[nk];if(b&&a<b)out.add(pairKey(a,b));});});
+  return out;
+}
+function cost(asg,seats,nmap,ng,rec,past){
+  let c=0; const adj=adjacentPairs(asg,nmap);
+  const ngS=new Set(ng.map(p=>pairKey(p[0],p[1])));
+  adj.forEach(pk=>{ if(ngS.has(pk))c+=10000; if(past[pk])c+=8*past[pk]; });
+  rec.forEach(p=>{ if(!adj.has(pairKey(p[0],p[1])))c+=60; });
+  return c;
+}
+function rnd(n){return Math.floor(Math.random()*n);}
+function solve(students,layout,cons,past,opts={}){
+  const restarts=opts.restarts||60, iters=opts.iters||900;
+  const seats=buildSeats(layout), nmap=neighborMap(seats,layout);
+  const ids=students.map(s=>s.id);
+  if(ids.length>seats.length) return {error:`生徒 ${ids.length} 人に対して席が ${seats.length} 席しかありません。`};
+  const allowed={}, pin={};
+  // --- gender-designated seats ---
+  const seatGender=layout.seatGender||{};
+  const hasGenderSeats=Object.values(seatGender).some(v=>v==='m'||v==='f');
+  const genderSet=(stu)=>{
+    if(!hasGenderSeats) return null;            // no gender restriction in this room
+    return new Set(seats.filter(s=>{
+      const d=seatGender[s.key];                 // undefined/'any' = どちらでも
+      if(d!=='m'&&d!=='f') return true;          // open seat: anyone
+      return d===stu.gender;                     // gendered seat: must match
+    }).map(s=>s.key));
+  };
+  const inter=(a,b)=> a==null?b : b==null?a : new Set([...a].filter(x=>b.has(x)));
+  students.forEach(s=>allowed[s.id]=genderSet(s));
+  const byId={}; students.forEach(s=>byId[s.id]=s);
+  (cons.fixed||[]).forEach(f=>{
+    let set=null;
+    if(f.type==='seat'){ if(seats.find(s=>s.key===f.seatKey)){pin[f.studentId]=f.seatKey; set=new Set([f.seatKey]);} }
+    else if(f.type==='frontRows'){ set=new Set(seats.filter(s=>s.r<f.rows).map(s=>s.key)); }
+    if(set) allowed[f.studentId]=inter(allowed[f.studentId], set);
+  });
+  const ok=(id,k)=>!allowed[id]||allowed[id].has(k);
+  let best=null,bestC=Infinity;
+  const seatKeys=seats.map(s=>s.key);
+  for(let R=0;R<restarts;R++){
+    const asg={},used=new Set(); let bad=false;
+    Object.entries(pin).forEach(([id,k])=>{if(used.has(k))bad=true; asg[k]=id; used.add(k);});
+    if(bad)continue;
+    const constrained=ids.filter(id=>allowed[id]&&!pin[id]);
+    let fail=false;
+    constrained.forEach(id=>{const o=[...allowed[id]].filter(k=>!used.has(k)); if(!o.length){fail=true;return;} const k=o[rnd(o.length)]; asg[k]=id; used.add(k);});
+    if(fail)continue;
+    const free=ids.filter(id=>!allowed[id]);
+    const rem=seatKeys.filter(k=>!used.has(k));
+    for(let i=rem.length-1;i>0;i--){const j=rnd(i+1);[rem[i],rem[j]]=[rem[j],rem[i]];}
+    free.forEach((id,i)=>asg[rem[i]]=id);
+    let cur=cost(asg,seats,nmap,cons.ng||[],cons.rec||[],past);
+    for(let it=0;it<iters;it++){
+      const k1=seatKeys[rnd(seatKeys.length)],k2=seatKeys[rnd(seatKeys.length)]; if(k1===k2)continue;
+      const s1=asg[k1],s2=asg[k2];
+      if(s1&&pin[s1])continue; if(s2&&pin[s2])continue;
+      if(s1&&!ok(s1,k2))continue; if(s2&&!ok(s2,k1))continue;
+      if(s2===undefined){asg[k2]=s1;delete asg[k1];} else if(s1===undefined){asg[k1]=s2;delete asg[k2];} else {asg[k1]=s2;asg[k2]=s1;}
+      const nc=cost(asg,seats,nmap,cons.ng||[],cons.rec||[],past);
+      if(nc<=cur)cur=nc;
+      else{ if(s2===undefined){asg[k1]=s1;delete asg[k2];} else if(s1===undefined){asg[k2]=s2;delete asg[k1];} else {asg[k1]=s1;asg[k2]=s2;} }
+    }
+    if(cur<bestC){bestC=cur;best={...asg};}
+    if(bestC===0)break;
+  }
+  if(!best) return {error:'条件を満たす配置が見つかりませんでした。固定席の条件がきびしすぎないか確認してください。'};
+  // stats
+  const adj=adjacentPairs(best,nmap);
+  const ngHit=(cons.ng||[]).filter(p=>adj.has(pairKey(p[0],p[1])));
+  const recHit=(cons.rec||[]).filter(p=>adj.has(pairKey(p[0],p[1])));
+  const repeats=[...adj].filter(pk=>past[pk]);
+  return {assignment:best, cost:bestC, stats:{ngHit, recHit, recTotal:(cons.rec||[]).length, repeats}};
+}
+
+// counts of seats by designation, and students by gender
+function tallies(students,layout){
+  const seats=buildSeats(layout), sg=layout.seatGender||{};
+  let M=0,F=0,A=0; seats.forEach(s=>{const d=sg[s.key]; if(d==='m')M++; else if(d==='f')F++; else A++;});
+  let nm=0,nf=0,nx=0; students.forEach(s=>{if(s.gender==='m')nm++; else if(s.gender==='f')nf++; else nx++;});
+  return {M,F,A,total:seats.length, nm,nf,nx, nstu:students.length, hasGender:(M+F)>0};
+}
+// returns array of problem messages (empty = OK)
+function feasibility(students,layout){
+  const t=tallies(students,layout), msgs=[];
+  if(t.nstu>t.total) msgs.push(`生徒 ${t.nstu}人に対して席が ${t.total}席しかありません。`);
+  if(t.hasGender){
+    if(t.nx>t.A) msgs.push(`性別を設定していない生徒が ${t.nx}人いますが、「どちらでも」席は ${t.A}席です。生徒の性別を設定するか、どちらでも席を増やしてください。`);
+    if(t.nm+t.nx>t.M+t.A) msgs.push(`男子が座れる席(男子席+どちらでも)が不足しています。`);
+    if(t.nf+t.nx>t.F+t.A) msgs.push(`女子が座れる席(女子席+どちらでも)が不足しています。`);
+  }
+  return msgs;
+}
+
+/* ============================= rendering ============================= */
+const view=document.getElementById('view');
+function render(){
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===activeTab));
+  ({roster:renderRoster, layout:renderLayout, care:renderCare, run:renderRun, history:renderHistory}[activeTab])();
+}
+
+/* ---------- sample data ---------- */
+function loadSample(){
+  // [name, gender, note]
+  const data=[
+    ['佐藤 はると','m',''],['鈴木 ゆうと','m',''],['高橋 そうた','m',''],['田中 れん','m','聴力に配慮'],
+    ['伊藤 かいと','m',''],['渡辺 りく','m','左利き'],['山本 だいき','m',''],['中村 しょう','m',''],
+    ['小林 たくみ','m',''],['加藤 こうき','m',''],['吉田 ゆうま','m',''],['山田 そら','m',''],
+    ['佐々木 はやて','m',''],['松本 りょう','m',''],['井上 けんと','m',''],['木村 ゆうき','m',''],
+    ['林 さくら','f','視力に配慮'],['清水 ひな','f',''],['山口 めい','f',''],['森 あおい','f',''],
+    ['池田 ゆい','f',''],['橋本 みお','f',''],['阿部 ことね','f',''],['石川 はな','f','不安が強い'],
+    ['前田 りん','f',''],['藤田 あかり','f',''],['後藤 ゆな','f',''],['岡田 みく','f',''],
+    ['長谷川 えま','f',''],['村上 りこ','f','']
+  ];
+  const students=data.map(d=>({id:uid(),name:d[0],gender:d[1],note:d[2]}));
+  const byName=n=>students.find(s=>s.name===n).id;
+
+  // layout: 6x6 grid, back row trimmed to 2 seats (uneven columns) -> 32 seats
+  const L={mode:'grid',rows:6,cols:6,frontBack:false,disabled:['g_5_0','g_5_1','g_5_4','g_5_5'],seatGender:{}};
+  // front row = どちらでも(A); rows 1-5: left 3 cols 男子席, right 3 cols 女子席
+  for(let r=1;r<6;r++)for(let c=0;c<6;c++){
+    const k=`g_${r}_${c}`; if(L.disabled.includes(k))continue;
+    L.seatGender[k]= c<3?'m':'f';
+  }
+  const fixed=[
+    {id:uid(),studentId:byName('林 さくら'),type:'frontRows',rows:1},     // 視力 → 前列
+    {id:uid(),studentId:byName('田中 れん'),type:'seat',seatKey:'g_0_0'}   // 聴力 → 特定席(前列・どちらでも)
+  ];
+  const ng=[[byName('鈴木 ゆうと'),byName('高橋 そうた')], [byName('池田 ゆい'),byName('橋本 みお')]];
+  const rec=[[byName('石川 はな'),byName('前田 りん')], [byName('山本 だいき'),byName('中村 しょう')]];
+
+  state.students=students; state.layout=L; state.fixed=fixed; state.ng=ng; state.rec=rec;
+  state.history=[]; state.current=null;
+
+  // generate two past months so 「過去の隣」 has data
+  const cons={fixed,ng,rec};
+  const r1=solve(students,L,cons,{},{restarts:50,iters:700});
+  if(r1.assignment){
+    state.history.push({id:uid(),date:thisYear()+'-04-08',month:'4月',label:'1学期はじめ',
+      layout:JSON.parse(JSON.stringify(L)),assignment:r1.assignment});
+    const past=pastCounts(state.history);
+    const r2=solve(students,L,cons,past,{restarts:50,iters:700});
+    if(r2.assignment)
+      state.history.push({id:uid(),date:thisYear()+'-05-13',month:'5月',label:'運動会の前',
+        layout:JSON.parse(JSON.stringify(L)),assignment:r2.assignment});
+  }
+}
+function thisYear(){return new Date().getFullYear();}
+
+/* ---------- ① roster ---------- */
+function renderRoster(){
+  const s=state.students;
+  view.innerHTML=`
+  <div class="card" style="border-color:var(--gold);background:#fffdf3">
+    <h2>お試し用データ <span class="tag">SAMPLE</span></h2>
+    <p class="lead">操作を確かめたいときは、30人分のサンプルクラス(男女・配慮メモ・男子席/女子席・固定席・NG/推奨ペア・過去2か月の履歴つき)を読み込めます。各タブを見て回ってから、「④ 席替え実行」で生成を試してください。</p>
+    <div class="row" style="align-items:center">
+      <div style="flex:0"><button class="btn" id="loadSample">サンプルを読み込む</button></div>
+      <div style="flex:0"><button class="btn clay" id="clearAll">すべて消去</button></div>
+      <div style="flex:1;font-size:.8rem;color:var(--ink-soft)">※ いまのデータがある場合は上書き/削除の確認が出ます。</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>① 名簿の登録 <span class="tag">${s.length} 人</span></h2>
+    <p class="lead">クラスの生徒を登録します。視力・支援など、座席に関係するメモも残せます(メモは席替え案の生成には使われず、先生の覚え書きです)。</p>
+    <div class="row">
+      <div style="flex:2"><label class="fld">名前</label><input type="text" id="rName" placeholder="例:山田 はな"></div>
+      <div style="flex:1"><label class="fld">性別(任意)</label>
+        <select id="rGender"><option value="">未設定</option><option value="m">男子</option><option value="f">女子</option><option value="x">その他</option></select></div>
+      <div style="flex:2"><label class="fld">メモ(任意)</label><input type="text" id="rNote" placeholder="例:左利き / 視力に配慮"></div>
+      <div style="flex:0"><button class="btn" id="rAdd">追加</button></div>
+    </div>
+    <div class="hint">まとめて登録:下の枠に1行に1人ずつ名前を貼り付けて「一括追加」。</div>
+    <div class="row">
+      <div style="flex:3"><textarea id="rBulk" placeholder="佐藤 ゆい&#10;鈴木 たろう&#10;高橋 みなと"></textarea></div>
+      <div style="flex:0"><button class="btn ghost" id="rBulkAdd">一括追加</button></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>登録ずみの生徒</h2>
+    ${s.length===0?`<div class="empty">まだ生徒が登録されていません。</div>`:`
+    <table><thead><tr><th style="width:34px">#</th><th>名前</th><th style="width:80px">性別</th><th>メモ</th><th style="width:120px"></th></tr></thead><tbody>
+    ${s.map((st,i)=>`<tr>
+      <td>${i+1}</td>
+      <td><input type="text" value="${esc(st.name)}" data-edit="name" data-id="${st.id}" style="border-color:transparent;background:transparent;padding:2px 4px;"></td>
+      <td><span class="pill ${st.gender||'x'}">${({m:'男子',f:'女子',x:'その他'}[st.gender])||'—'}</span></td>
+      <td><input type="text" value="${esc(st.note||'')}" data-edit="note" data-id="${st.id}" placeholder="—" style="border-color:transparent;background:transparent;padding:2px 4px;color:var(--ink-soft);font-size:.84rem;"></td>
+      <td><button class="mini" data-del="${st.id}">削除</button></td>
+    </tr>`).join('')}
+    </tbody></table>`}
+  </div>`;
+
+  document.getElementById('loadSample').onclick=()=>{
+    const has=state.students.length||state.history.length;
+    if(has && !confirm('いまのデータを上書きしてサンプルを読み込みます。よろしいですか?'))return;
+    loadSample(); save(); activeTab='roster'; render();
+    toast('サンプルを読み込みました');
+  };
+  document.getElementById('clearAll').onclick=()=>{
+    if(!confirm('すべてのデータ(名簿・配慮・履歴)を消去します。元に戻せません。よろしいですか?'))return;
+    state.students=[]; state.fixed=[]; state.ng=[]; state.rec=[]; state.history=[]; state.current=null;
+    state.layout={mode:'grid',rows:5,cols:6,frontBack:false,disabled:[],groups:8,perGroup:4,seatGender:{}};
+    save(); render(); toast('消去しました');
+  };
+  document.getElementById('rAdd').onclick=()=>{
+    const n=document.getElementById('rName').value.trim(); if(!n)return toast('名前を入力してください');
+    state.students.push({id:uid(),name:n,gender:document.getElementById('rGender').value,note:document.getElementById('rNote').value.trim()});
+    save();render();
+  };
+  document.getElementById('rBulkAdd').onclick=()=>{
+    const lines=document.getElementById('rBulk').value.split('\n').map(x=>x.trim()).filter(Boolean);
+    if(!lines.length)return toast('名前が入力されていません');
+    lines.forEach(n=>state.students.push({id:uid(),name:n,gender:'',note:''}));
+    save();render();toast(lines.length+'人を追加しました');
+  };
+  view.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.del;
+    state.students=state.students.filter(x=>x.id!==id);
+    state.fixed=state.fixed.filter(f=>f.studentId!==id);
+    state.ng=state.ng.filter(p=>!p.includes(id)); state.rec=state.rec.filter(p=>!p.includes(id));
+    save();render();
+  });
+  view.querySelectorAll('[data-edit]').forEach(inp=>inp.onchange=()=>{
+    const st=state.students.find(x=>x.id===inp.dataset.id); if(st){st[inp.dataset.edit]=inp.value.trim();save();}
+  });
+}
+
+/* ---------- ② layout ---------- */
+function pruneLayout(L){
+  if(L.mode==='grid'){
+    const valid=new Set(); for(let r=0;r<L.rows;r++)for(let c=0;c<L.cols;c++)valid.add(`g_${r}_${c}`);
+    L.disabled=(L.disabled||[]).filter(k=>valid.has(k));
+    Object.keys(L.seatGender||{}).forEach(k=>{if(k.startsWith('g_')&&!valid.has(k))delete L.seatGender[k];});
+  }else{
+    const valid=new Set(); for(let g=0;g<L.groups;g++)for(let s=0;s<L.perGroup;s++)valid.add(`p_${g}_${s}`);
+    Object.keys(L.seatGender||{}).forEach(k=>{if(k.startsWith('p_')&&!valid.has(k))delete L.seatGender[k];});
+  }
+}
+function paint(L,key){
+  L.disabled=L.disabled||[]; L.seatGender=L.seatGender||{};
+  const isGroup=key.startsWith('p_');
+  if(brush==='off'){ if(isGroup)return; if(!L.disabled.includes(key))L.disabled.push(key); delete L.seatGender[key]; }
+  else{
+    if(!isGroup)L.disabled=L.disabled.filter(x=>x!==key);
+    if(brush==='m'||brush==='f')L.seatGender[key]=brush; else delete L.seatGender[key];
+  }
+}
+function brushPalette(){
+  const items=[['off','席なし','repeating-linear-gradient(45deg,#efe8d6,#efe8d6 3px,#e6ddc6 3px,#e6ddc6 6px)'],
+    ['any','どちらでも','#fffdf6'],['m','男子席','#e2ecf6'],['f','女子席','#f6e2ee']];
+  return `<div class="brushbar"><span class="lbl">ぬるツール:</span>${items.map(([v,t,c])=>
+    `<button class="brush ${brush===v?'active':''}" data-brush="${v}"><span class="sw" style="background:${c}"></span>${t}</button>`).join('')}
+    <span style="font-size:.74rem;color:var(--ink-soft)">← 選んでマスをクリック</span></div>`;
+}
+function renderLayout(){
+  const L=state.layout; L.seatGender=L.seatGender||{};
+  const seatCount=buildSeats(L).length, t=tallies(state.students,L);
+  const probs=feasibility(state.students,L);
+  view.innerHTML=`
+  <div class="card">
+    <h2>② 教室レイアウト</h2>
+    <p class="lead">座席の形を選び、マスをクリックして「席なし / どちらでも / 男子席 / 女子席」を塗り分けます。<b>列ごとに席数が違ってもOK</b> — いらないマスを「席なし」にしてください。男子席・女子席を指定すると、その性別の生徒だけがそこに入るよう自動で配置します。</p>
+    <div class="seg" id="modeSeg">
+      <button data-mode="grid" class="${L.mode==='grid'?'active':''}">整列(前向き)</button>
+      <button data-mode="group" class="${L.mode==='group'?'active':''}">グループ(島)</button>
+    </div>
+    ${L.mode==='grid'?gridControls(L):groupControls(L)}
+    ${brushPalette()}
+    <div style="text-align:center;font-size:.7rem;color:var(--ink-soft);letter-spacing:.4em;margin:6px 0 4px">▲ 黒板がわ ▲</div>
+    ${L.mode==='grid'?gridEditor(L):groupEditor(L)}
+    <div class="stat" style="margin-top:18px">
+      <div class="box"><b>${seatCount}</b><span>用意される席</span></div>
+      <div class="box"><b>${t.A}</b><span>どちらでも席</span></div>
+      <div class="box" style="border-color:#9cc0e0"><b style="color:#2c5a86">${t.M}</b><span>男子席</span></div>
+      <div class="box" style="border-color:#dfa6c6"><b style="color:#a23a72">${t.F}</b><span>女子席</span></div>
+    </div>
+    <div class="stat">
+      <div class="box"><b>${t.nstu}</b><span>生徒(合計)</span></div>
+      <div class="box"><b style="color:#2c5a86">${t.nm}</b><span>男子</span></div>
+      <div class="box"><b style="color:#a23a72">${t.nf}</b><span>女子</span></div>
+      <div class="box"><b style="color:var(--ink-soft)">${t.nx}</b><span>性別未設定</span></div>
+    </div>
+    ${probs.length?`<div class="hint" style="border-color:var(--clay)">${probs.map(esc).join('<br>')}</div>`:
+      `<div class="hint">この条件で席替えできます。${t.hasGender&&t.nx>0?'性別未設定の生徒は「どちらでも席」に入ります。':''}</div>`}
+  </div>`;
+
+  view.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=()=>{L.mode=b.dataset.mode;save();render();});
+  view.querySelectorAll('[data-brush]').forEach(b=>b.onclick=()=>{brush=b.dataset.brush;render();});
+  view.querySelectorAll('.cell[data-k]').forEach(c=>c.onclick=()=>{paint(L,c.dataset.k);save();render();});
+  if(L.mode==='grid'){
+    ['rows','cols'].forEach(k=>{const el=document.getElementById('L_'+k); if(el)el.onchange=()=>{L[k]=Math.max(1,Math.min(12,+el.value||1));pruneLayout(L);save();render();};});
+    const fb=document.getElementById('L_fb'); if(fb)fb.onchange=()=>{L.frontBack=fb.checked;save();render();};
+  }else{
+    ['groups','perGroup'].forEach(k=>{const el=document.getElementById('L_'+k); if(el)el.onchange=()=>{L[k]=Math.max(1,Math.min(k==='perGroup'?6:12,+el.value||1));pruneLayout(L);save();render();};});
+  }
+}
+function gridControls(L){
+  return `
+  <div class="row" style="margin-top:14px">
+    <div style="flex:0;min-width:90px"><label class="fld">行(たて)</label><input type="number" id="L_rows" value="${L.rows}" min="1" max="12"></div>
+    <div style="flex:0;min-width:90px"><label class="fld">列(よこ)</label><input type="number" id="L_cols" value="${L.cols}" min="1" max="12"></div>
+    <div style="flex:2"><label class="fld">隣の数え方</label>
+      <label style="font-weight:400;font-size:.86rem"><input type="checkbox" id="L_fb" ${L.frontBack?'checked':''}> 前後の席も「隣」として扱う(初期は左右のみ)</label></div>
+  </div>`;
+}
+function gridEditor(L){
+  let grid=`<div class="editgrid" style="grid-template-columns:repeat(${L.cols},40px)">`;
+  for(let r=0;r<L.rows;r++)for(let c=0;c<L.cols;c++){
+    const k=`g_${r}_${c}`, off=(L.disabled||[]).includes(k), g=(L.seatGender||{})[k];
+    const cls=off?'off':(g==='m'?'male':g==='f'?'female':'');
+    const txt=off?'×':(g==='m'?'男':g==='f'?'女':'');
+    grid+=`<div class="cell ${cls}" data-k="${k}">${txt}</div>`;
+  }
+  return grid+`</div>`;
+}
+function groupControls(L){
+  return `
+  <div class="row" style="margin-top:14px">
+    <div style="flex:0;min-width:110px"><label class="fld">班の数</label><input type="number" id="L_groups" value="${L.groups}" min="1" max="12"></div>
+    <div style="flex:0;min-width:110px"><label class="fld">1班の人数</label><input type="number" id="L_perGroup" value="${L.perGroup}" min="2" max="6"></div>
+  </div>
+  <div class="hint">同じ班の生徒どうしは、すべて「隣」として扱われます。班の中で席に男女を指定することもできます。</div>`;
+}
+function groupEditor(L){
+  let html=`<div class="island-wrap" style="margin-top:6px">`;
+  const per=L.perGroup,gcols=per<=2?per:2;
+  for(let g=0;g<L.groups;g++){
+    html+=`<div class="island" style="grid-template-columns:repeat(${gcols},40px)">`;
+    for(let s=0;s<per;s++){
+      const k=`p_${g}_${s}`, gd=(L.seatGender||{})[k];
+      const cls=gd==='m'?'male':gd==='f'?'female':'';
+      const txt=gd==='m'?'男':gd==='f'?'女':(g+1);
+      html+=`<div class="cell ${cls}" data-k="${k}">${txt}</div>`;
+    }
+    html+=`</div>`;
+  }
+  return html+`</div>`;
+}
+
+/* ---------- ③ care ---------- */
+function renderCare(){
+  const opts=state.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+  const seats=buildSeats(state.layout);
+  const seatOpts=seats.map(s=>`<option value="${s.key}">${seatLabel(s,state.layout)}</option>`).join('');
+  view.innerHTML=`
+  <div class="card">
+    <h2>固定席 <span class="tag">${state.fixed.length}</span></h2>
+    <p class="lead">視力・聴力・支援など、配置を固定したい生徒を指定します。「前方◯列のどこか」または「特定の席」を選べます。</p>
+    <div class="row">
+      <div style="flex:2"><label class="fld">生徒</label><select id="fStudent">${opts||'<option>先に名簿を登録</option>'}</select></div>
+      <div style="flex:1"><label class="fld">種類</label><select id="fType"><option value="frontRows">前方の列(どこか)</option><option value="seat">特定の席</option></select></div>
+      <div style="flex:1" id="fDetailWrap"><label class="fld">前から何列</label><input type="number" id="fRows" value="1" min="1" max="${state.layout.rows||6}"></div>
+      <div style="flex:0"><button class="btn" id="fAdd">追加</button></div>
+    </div>
+    ${state.fixed.length?`<table style="margin-top:6px"><tbody>${state.fixed.map(f=>`<tr>
+      <td><b>${esc(nameOf(f.studentId))}</b></td>
+      <td><span class="pill fix">${f.type==='seat'?'特定の席:'+seatLabelByKey(f.seatKey):'前から '+f.rows+' 列以内'}</span></td>
+      <td style="width:80px"><button class="mini" data-fdel="${f.id}">削除</button></td></tr>`).join('')}</tbody></table>`:''}
+  </div>
+
+  <div class="card">
+    <h2>離したいペア(NG) <span class="tag">${state.ng.length}</span></h2>
+    <p class="lead">トラブルがある・私語が増えるなど、隣にしたくない組み合わせ。生成時はこの2人が隣にならないように強く避けます。</p>
+    ${pairForm('ng','離す')}
+    ${pairList('ng','✕','clay')}
+  </div>
+
+  <div class="card">
+    <h2>近づけたいペア(推奨) <span class="tag">${state.rec.length}</span></h2>
+    <p class="lead">教え合える・安心できる・関わりを広げたいなど、できれば隣にしたい組み合わせ。可能な範囲で隣になるようにします。</p>
+    ${pairForm('rec','近づける')}
+    ${pairList('rec','◎','teal')}
+  </div>`;
+
+  const typeSel=document.getElementById('fType');
+  const detailWrap=document.getElementById('fDetailWrap');
+  function syncDetail(){
+    if(typeSel.value==='seat')
+      detailWrap.innerHTML=`<label class="fld">席</label><select id="fSeat">${seatOpts}</select>`;
+    else
+      detailWrap.innerHTML=`<label class="fld">前から何列</label><input type="number" id="fRows" value="1" min="1" max="${state.layout.rows||6}">`;
+  }
+  typeSel.onchange=syncDetail;
+  document.getElementById('fAdd').onclick=()=>{
+    const sid=document.getElementById('fStudent').value; if(!sid)return;
+    if(state.fixed.find(f=>f.studentId===sid))return toast('その生徒はすでに固定席があります');
+    const t=typeSel.value;
+    if(t==='seat'){const k=document.getElementById('fSeat').value; state.fixed.push({id:uid(),studentId:sid,type:'seat',seatKey:k});}
+    else{const r=Math.max(1,+document.getElementById('fRows').value||1); state.fixed.push({id:uid(),studentId:sid,type:'frontRows',rows:r});}
+    save();render();
+  };
+  view.querySelectorAll('[data-fdel]').forEach(b=>b.onclick=()=>{state.fixed=state.fixed.filter(f=>f.id!==b.dataset.fdel);save();render();});
+
+  ['ng','rec'].forEach(kind=>{
+    const add=document.getElementById(kind+'Add');
+    if(add)add.onclick=()=>{
+      const a=document.getElementById(kind+'A').value, b=document.getElementById(kind+'B').value;
+      if(!a||!b||a===b)return toast('異なる2人を選んでください');
+      if(state[kind].find(p=>(p[0]===a&&p[1]===b)||(p[0]===b&&p[1]===a)))return toast('すでに登録ずみです');
+      state[kind].push([a,b]);save();render();
+    };
+    view.querySelectorAll(`[data-${kind}del]`).forEach(btn=>btn.onclick=()=>{
+      const i=+btn.dataset[kind+'del']; state[kind].splice(i,1);save();render();
+    });
+  });
+}
+function pairForm(kind,verb){
+  const opts=state.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+  return `<div class="row">
+    <div><label class="fld">生徒A</label><select id="${kind}A">${opts||'<option>名簿が必要</option>'}</select></div>
+    <div style="flex:0;align-self:center;padding-bottom:6px;font-weight:700;color:var(--ink-soft)">と</div>
+    <div><label class="fld">生徒B</label><select id="${kind}B">${opts}</select></div>
+    <div style="flex:0"><button class="btn ${kind==='ng'?'clay':''}" id="${kind}Add">${verb}</button></div>
+  </div>`;
+}
+function pairList(kind,sym,cls){
+  if(!state[kind].length)return '';
+  return `<div style="margin-top:10px">${state[kind].map((p,i)=>`<div class="listrow">
+    <b>${esc(nameOf(p[0]))}</b><span class="arrow" style="color:var(--${cls})">${sym}</span><b>${esc(nameOf(p[1]))}</b>
+    <button class="mini" style="margin-left:auto" data-${kind}del="${i}">削除</button></div>`).join('')}</div>`;
+}
+function seatLabel(s,L){ return L.mode==='grid'?`${s.r+1}列目-${s.c+1}番`:`${s.group+1}班`; }
+function seatLabelByKey(k){
+  if(k.startsWith('g_')){const[,r,c]=k.split('_');return `${+r+1}列目-${+c+1}番`;}
+  const[,g]=k.split('_');return `${+g+1}班`;
+}
+
+/* ---------- ④ run ---------- */
+function renderRun(){
+  const n=state.students.length, seatN=buildSeats(state.layout).length;
+  const today=new Date().toISOString().slice(0,10);
+  view.innerHTML=`
+  <div class="card">
+    <h2>④ 席替え案の生成</h2>
+    <p class="lead">名簿・レイアウト・配慮設定と、これまでの履歴から計算した「過去の隣」をすべてふまえて配置案を作ります。</p>
+    <div class="row" style="align-items:center">
+      <div style="flex:0"><button class="btn" id="genBtn">席替え案を生成する</button></div>
+      <div style="flex:0"><button class="btn ghost" id="regenBtn" ${state.current?'':'style=display:none'}>別の案を出す</button></div>
+      <div style="flex:1;text-align:right;font-size:.82rem;color:var(--ink-soft)">生徒 ${n}人 / 席 ${seatN}席${state.history.length?` ・ 履歴 ${state.history.length}件を反映`:''}</div>
+    </div>
+    ${n===0?'<div class="hint" style="border-color:var(--clay)">先に「① 名簿」で生徒を登録してください。</div>':
+      (feasibility(state.students,state.layout).length?`<div class="hint" style="border-color:var(--clay)">${feasibility(state.students,state.layout).map(esc).join('<br>')}<br><b>「② 教室レイアウト」で調整してください。</b></div>`:'')}
+    <div id="runResult"></div>
+  </div>
+  ${state.current?`<div class="card">
+    <h2>この案を履歴に保存</h2>
+    <p class="lead">保存すると、次回以降の「過去の隣」の判定に使われます。何月の席かを記録しておくと後で役立ちます。</p>
+    <div class="row">
+      <div style="flex:0;min-width:160px"><label class="fld">実施日</label><input type="date" id="saveDate" value="${today}"></div>
+      <div style="flex:2"><label class="fld">メモ(任意)</label><input type="text" id="saveLabel" placeholder="例:2学期はじめ / 班活動用"></div>
+      <div style="flex:0"><button class="btn" id="saveHist">履歴に保存</button></div>
+    </div>
+  </div>`:''}`;
+
+  const result=document.getElementById('runResult');
+  function showCurrent(){
+    if(!state.current){result.innerHTML='';return;}
+    const {assignment,stats}=state.current;
+    result.innerHTML=`
+      <div class="stat" style="margin-top:18px">
+        <div class="box ${stats.ngHit.length?'bad':'good'}"><b>${stats.ngHit.length}</b><span>NGペアの隣接(0が理想)</span></div>
+        <div class="box good"><b>${stats.recHit.length}/${stats.recTotal}</b><span>推奨ペアの隣接達成</span></div>
+        <div class="box ${stats.repeats.length?'':'good'}"><b>${stats.repeats.length}</b><span>過去に隣だった組の再発</span></div>
+      </div>
+      ${stats.ngHit.length?`<div class="hint" style="border-color:var(--clay)">NGペアが隣接しています:${stats.ngHit.map(p=>esc(nameOf(p[0]))+'と'+esc(nameOf(p[1]))).join('、')}。席数や固定席の都合で回避しきれませんでした。「別の案を出す」か条件を見直してください。</div>`:''}
+      ${seatChart(state.current.layout,assignment,stats.ngHit)}`;
+  }
+  showCurrent();
+
+  const gen=()=>{
+    if(state.students.length===0)return toast('先に名簿を登録してください');
+    const past=pastCounts(state.history);
+    const res=solve(state.students,state.layout,{fixed:state.fixed,ng:state.ng,rec:state.rec},past,{restarts:70,iters:1000});
+    if(res.error){result.innerHTML=`<div class="hint" style="border-color:var(--clay)">${res.error}</div>`;return;}
+    state.current={layout:JSON.parse(JSON.stringify(state.layout)),assignment:res.assignment,stats:res.stats};
+    save();render();
+  };
+  document.getElementById('genBtn').onclick=gen;
+  const rb=document.getElementById('regenBtn'); if(rb)rb.onclick=gen;
+  const sh=document.getElementById('saveHist');
+  if(sh)sh.onclick=()=>{
+    const d=document.getElementById('saveDate').value||today;
+    const month=(+d.slice(5,7))+'月';
+    state.history.unshift({id:uid(),date:d,month,label:document.getElementById('saveLabel').value.trim(),
+      layout:state.current.layout, assignment:state.current.assignment});
+    save();toast('履歴に保存しました');activeTab='history';render();
+  };
+}
+
+function seatChart(L,asg,ngHit){
+  const ngIds=new Set(); (ngHit||[]).forEach(p=>{ngIds.add(p[0]);ngIds.add(p[1]);});
+  const fixedSet=new Set(state.fixed.map(f=>f.studentId));
+  const sg=L.seatGender||{};
+  const seatHTML=(s)=>{
+    const gd=sg[s.key], gcls=gd==='m'?'gm':gd==='f'?'gf':'';
+    const gmark=gd==='m'?'<span class="corner" style="color:#2c5a86">♂</span>':gd==='f'?'<span class="corner" style="color:#a23a72">♀</span>':'';
+    const sid=asg[s.key];
+    if(!sid)return `<div class="seat empty ${gcls}">${gmark}<span class="meta">空席</span></div>`;
+    const st=state.students.find(x=>x.id===sid)||{name:'?'};
+    const warn=ngIds.has(sid), fix=fixedSet.has(sid);
+    return `<div class="seat ${gcls} ${fix?'fixed':''} ${warn?'warn':''}">
+      ${fix?'<span class="corner">固</span>':gmark}${warn?'<span class="warncorner">NG</span>':''}
+      <span class="nm">${esc(st.name)}</span>${st.note?`<span class="meta">${esc(st.note)}</span>`:''}</div>`;
+  };
+  if(L.mode==='grid'){
+    const seats=buildSeats(L); const byPos={}; seats.forEach(s=>byPos[`${s.r},${s.c}`]=s);
+    let html=`<div class="board">こ く ば ん</div><div class="gridseats" style="grid-template-columns:repeat(${L.cols},auto)">`;
+    for(let r=0;r<L.rows;r++)for(let c=0;c<L.cols;c++){
+      const s=byPos[`${r},${c}`];
+      html+= s?seatHTML(s):`<div></div>`;
+    }
+    html+=`</div>`; return html;
+  }else{
+    const seats=buildSeats(L); const byG={}; seats.forEach(s=>{(byG[s.group]=byG[s.group]||[]).push(s);});
+    let html=`<div class="board">こ く ば ん</div><div class="island-wrap">`;
+    Object.keys(byG).forEach(g=>{
+      const per=L.perGroup,gcols=per<=2?per:2;
+      html+=`<div class="island" style="grid-template-columns:repeat(${gcols},auto)">`+byG[g].map(seatHTML).join('')+`</div>`;
+    });
+    html+=`</div>`; return html;
+  }
+}
+
+/* ---------- ⑤ history ---------- */
+function renderHistory(){
+  const opts=state.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+  view.innerHTML=`
+  <div class="card">
+    <h2>⑤ 過去の隣 しらべ</h2>
+    <p class="lead">保存した履歴をもとに、ある生徒がこれまで誰と隣り合ってきたかを集計します。関わりの薄い相手や、続いている組み合わせの確認に。</p>
+    ${state.history.length===0?'<div class="empty">まだ履歴がありません。「④ 席替え実行」で案を保存すると、ここに反映されます。</div>':`
+    <div class="row"><div style="flex:1"><label class="fld">生徒を選ぶ</label><select id="nbrSel">${opts}</select></div></div>
+    <div id="nbrResult" style="margin-top:12px"></div>`}
+  </div>
+  <div class="card">
+    <h2>座席の履歴 <span class="tag">${state.history.length}件</span></h2>
+    ${state.history.length===0?'<div class="empty">保存された座席はまだありません。</div>':
+      state.history.map(h=>`<div class="listrow" style="align-items:flex-start;flex-wrap:wrap">
+        <div style="min-width:64px"><span class="pill fix">${h.month}</span></div>
+        <div style="flex:1">
+          <b>${h.date}</b> ${h.label?`<span style="color:var(--ink-soft);font-size:.84rem">— ${esc(h.label)}</span>`:''}
+          <div style="font-size:.78rem;color:var(--ink-soft)">${h.layout.mode==='grid'?`整列 ${h.layout.rows}×${h.layout.cols}`:`グループ ${h.layout.groups}班`} ・ ${Object.keys(h.assignment).filter(k=>h.assignment[k]).length}人</div>
+        </div>
+        <button class="mini" data-view="${h.id}">座席を見る</button>
+        <button class="mini" data-hdel="${h.id}">削除</button>
+        <div class="hview" id="hv_${h.id}" style="width:100%;display:none;margin-top:10px"></div>
+      </div>`).join('')}
+  </div>`;
+
+  const sel=document.getElementById('nbrSel');
+  if(sel){
+    const showNbr=()=>{
+      const id=sel.value; const counts={};
+      state.history.forEach(h=>{
+        const seats=buildSeats(h.layout),nm=neighborMap(seats,h.layout);
+        Object.keys(nm).forEach(k=>{ if(h.assignment[k]!==id)return; nm[k].forEach(nk=>{const o=h.assignment[nk]; if(o)counts[o]=(counts[o]||0)+1;}); });
+      });
+      const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+      const never=state.students.filter(s=>s.id!==id&&!counts[s.id]);
+      const box=document.getElementById('nbrResult');
+      box.innerHTML=`
+        <div style="font-size:.85rem;font-weight:700;margin-bottom:4px">これまで隣だった相手</div>
+        ${entries.length?entries.map(([oid,c])=>`<span class="nbr-chip">${esc(nameOf(oid))}<b>${c}</b></span>`).join(''):'<span style="color:var(--ink-soft);font-size:.85rem">まだありません</span>'}
+        <div style="font-size:.85rem;font-weight:700;margin:14px 0 4px">まだ一度も隣になっていない相手 <span style="color:var(--ink-soft);font-weight:400">(${never.length}人)</span></div>
+        ${never.length?never.map(s=>`<span class="nbr-chip" style="border-style:dashed">${esc(s.name)}</span>`).join(''):'<span style="color:var(--ink-soft);font-size:.85rem">全員と隣になりました</span>'}`;
+    };
+    sel.onchange=showNbr; showNbr();
+  }
+  view.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{
+    const h=state.history.find(x=>x.id===b.dataset.view); const box=document.getElementById('hv_'+h.id);
+    if(box.style.display==='none'){box.style.display='block';box.innerHTML=seatChart(h.layout,h.assignment,[]);b.textContent='閉じる';}
+    else{box.style.display='none';box.innerHTML='';b.textContent='座席を見る';}
+  });
+  view.querySelectorAll('[data-hdel]').forEach(b=>b.onclick=()=>{state.history=state.history.filter(x=>x.id!==b.dataset.hdel);save();render();});
+}
+
+/* ============================= boot ============================= */
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;render();});
+(async function(){
+  const raw=await Store.get(KEY);
+  if(raw){ try{ const d=JSON.parse(raw); state={...state,...d, layout:{...state.layout,...(d.layout||{})}}; }catch(e){} }
+  document.getElementById('saveState').textContent = raw?'前回のデータを読み込みました':'新規データではじめます';
+  render();
+})();
+</script>
+</body>
+</html>
